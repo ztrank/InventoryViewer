@@ -1,0 +1,47 @@
+﻿R e a d m e
+-----------
+
+I n v e n t o r y V i e w e r
+----------------
+Displays the ship wide inventory for Cargo, Hydrogen, and Oxygen.
+
+Configuration
+----------------
+
+Programmable Block
+   - On the programmable block, certain ini data must be set:
+   - General
+      - Ignore is an optional comma separated list of names to ignore
+      - Supress errors is an optional setting to supress thrown errors.
+
+      [general]
+      ignore=<optional-comma-separated-list>
+      supressErrors=<true|false>
+
+   - Display
+      - The display section must one or more of the 'search' or 'panels' options set.
+      - Search is a term to search blocks for to include in the list of display panels.
+      - Panels is a comma separated value of exact names of blocks.
+      
+      [display]
+      search=<optional-search-term>
+      panels=<optional-comma-separate-names>
+
+Text Panels
+    - On the text panels to display, there are optional settings
+    - inventory
+        - cargo: Optional boolean to disable cargo on this screen
+        - hydrogen: Optional boolean to disable hydrogen on this screen
+        - oxygen: Optional boolean to disable oxygen on this screen
+        - half-symbol: Optional symbol to dispaly for a segment that is less than complete but more than half
+        - full-symbol: Optional symbol to display for a segment that is full
+        - Segments: Optional integer for number of segments to display
+
+    [inventory]
+    cargo=<true|false: true>
+    hydrogen=<true|false: true>
+    oxygen=<true|false: true>
+    half-symbol=<optional string>
+    full-symbol=<optional string>
+    segments=<optional int>
+
