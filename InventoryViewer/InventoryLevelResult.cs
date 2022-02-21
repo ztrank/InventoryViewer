@@ -20,10 +20,19 @@
     using VRage.Game.ObjectBuilders.Definitions;
     using VRageMath;
 
+    /// <summary>
+    /// Program partial class. Contains the InventoryLevelResult utility class.
+    /// </summary>
     partial class Program
     {
+        /// <summary>
+        /// Inventory Level Result class is a data class for the inventory result.
+        /// </summary>
         public class InventoryLevelResult
         {
+            /// <summary>
+            /// Gets the percentage level of the inventory.
+            /// </summary>
             public float Percentage
             {
                 get
@@ -36,9 +45,25 @@
                     return this.CurrentVolume.RawValue * (1f / this.MaxVolume.RawValue) * 100;
                 }
             }
+
+            /// <summary>
+            /// Gets or sets the current mass.
+            /// </summary>
             public MyFixedPoint CurrentMass { get; set; }
+
+            /// <summary>
+            /// Gets or sets the current volume.
+            /// </summary>
             public MyFixedPoint CurrentVolume { get; set; }
+
+            /// <summary>
+            /// Gets or sets the max volume.
+            /// </summary>
             public MyFixedPoint MaxVolume { get; set; }
+
+            /// <summary>
+            /// Gets or sets the item count.
+            /// </summary>
             public int ItemCount { get; set; }
         }
     }
