@@ -60,13 +60,13 @@
                 this.TerminalBlocks.Clear();
                 this.Inventory.Clear();
                 this.CargoDisplay.Clear();
-                this.GridTerminalSystem.GetBlocksOfType<IMyEntity>(this.TerminalBlocks, ShipInventory.FilterBlocks(ignore));
+                this.GridTerminalSystem.GetBlocksOfType<IMyEntity>(this.TerminalBlocks, ShipInventory.FilterBlocks(ignore, this.Me));
                 this.Inventory.AddRange(this.TerminalBlocks);
 
                 
                 string cargoDisplayPanelTag = this.ini.Get("display", "search").ToString("");
                 string[] cargoDisplayPanelNames = this.ini.Get("display", "panels").ToString("").Split(',');
-                this.CargoDisplay.Initialize(cargoDisplayPanelTag, cargoDisplayPanelNames, ignore);
+                this.CargoDisplay.Initialize(cargoDisplayPanelTag, cargoDisplayPanelNames, ignore, this.Me);
                 this.Echo("Initialization Complete");
             }
             else

@@ -231,7 +231,7 @@
                 this.TerminalBlocks.Clear();
             }
 
-            public void Initialize(string searchTag, string[] blockNames, string[] ignore)
+            public void Initialize(string searchTag, string[] blockNames, string[] ignore, IMyProgrammableBlock me)
             {
                 this.Clear();
                 if (string.IsNullOrWhiteSpace(searchTag) && blockNames.Length == 0)
@@ -255,7 +255,7 @@
                             throw new Exception($"Unable to add Text Panel: {blockName} returned no results.");
                         }
                     }
-                    else
+                    else if(panel.IsSameConstructAs(me))
                     {
                         this.Add(panel);
                     }
@@ -263,7 +263,7 @@
 
                 if (!string.IsNullOrWhiteSpace(searchTag))
                 {
-                    this.SearchBlocksByName(searchTag, this.TerminalBlocks, block => block is IMyTextPanel);
+                    this.SearchBlocksByName(searchTag, this.TerminalBlocks, block => block is IMyTextPanel && block.IsSameConstructAs(me));
                     foreach(IMyTerminalBlock block in this.TerminalBlocks)
                     {
                         this.Add(block);

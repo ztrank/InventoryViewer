@@ -29,11 +29,16 @@
             /// </summary>
             /// <param name="ignoreNames">Search string for ignored blocks.</param>
             /// <returns>True if the block should be returned by the GridTerminalSystem.</returns>
-            public static Func<IMyEntity, bool> FilterBlocks(string[] ignoreNames)
+            public static Func<IMyEntity, bool> FilterBlocks(string[] ignoreNames, IMyProgrammableBlock me)
             {
 
                 return (IMyEntity block) =>
                 {
+                    if (!((IMyTerminalBlock)block).IsSameConstructAs(me))
+                    {
+                        return false;
+                    }
+
                     if (ignoreNames.Any() && block.DisplayName != null)
                     {
                         foreach (string ignore in ignoreNames)
