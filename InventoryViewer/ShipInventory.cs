@@ -20,20 +20,32 @@
     using VRage.Game.ObjectBuilders.Definitions;
     using VRageMath;
 
+    /// <summary>
+    /// Program partial class. Defines the ship inventory untility class.
+    /// </summary>
     partial class Program
     {
+        /// <summary>
+        /// Ship inventory class. Handles all functionality for getting and checking the inventory.
+        /// </summary>
         public class ShipInventory
         {
             /// <summary>
             /// Predicate to check if the blocks should be returned by the GridTerminalSystem.
             /// </summary>
             /// <param name="ignoreNames">Search string for ignored blocks.</param>
+            /// <param name="me">Programmable block to check grid ownership.</param>
             /// <returns>True if the block should be returned by the GridTerminalSystem.</returns>
-            public static Func<IMyEntity, bool> FilterBlocks(string[] ignoreNames)
+            public static Func<IMyEntity, bool> FilterBlocks(string[] ignoreNames, IMyProgrammableBlock me)
             {
 
                 return (IMyEntity block) =>
                 {
+                    if (!((IMyTerminalBlock)block).IsSameConstructAs(me))
+                    {
+                        return false;
+                    }
+
                     if (ignoreNames.Any() && block.DisplayName != null)
                     {
                         foreach (string ignore in ignoreNames)
@@ -45,55 +57,19 @@
                         }
                     }
 
-                    if (block is IMyProductionBlock)
-                    {
-                        return true;
-                    }
-                    else if (block is IMyCargoContainer)
-                    {
-                        return true;
-                    }
-                    else if (block is IMyCockpit)
-                    {
-                        return true;
-                    }
-                    else if (block is IMyCollector)
-                    {
-                        return true;
-                    }
-                    else if (block is IMyGasTank)
-                    {
-                        return true;
-                    }
-                    else if (block is IMyLargeConveyorTurretBase)
-                    {
-                        return true;
-                    }
-                    else if (block is IMyGasGenerator)
-                    {
-                        return true;
-                    }
-                    else if (block is IMyReactor)
-                    {
-                        return true;
-                    }
-                    else if (block is IMyShipConnector)
-                    {
-                        return true;
-                    }
-                    else if (block is IMyShipToolBase)
-                    {
-                        return true;
-                    }
-                    else if (block is IMySmallGatlingGun)
-                    {
-                        return true;
-                    }
-                    else if (block is IMySmallMissileLauncher)
-                    {
-                        return true;
-                    }
-                    else if (block is IMyStoreBlock)
+                    if (block is IMyProductionBlock ||
+                        block is IMyCargoContainer ||
+                        block is IMyCockpit ||
+                        block is IMyCollector ||
+                        block is IMyGasTank ||
+                        block is IMyLargeConveyorTurretBase ||
+                        block is IMyGasGenerator ||
+                        block is IMyReactor ||
+                        block is IMyShipConnector ||
+                        block is IMyShipToolBase ||
+                        block is IMySmallGatlingGun ||
+                        block is IMySmallMissileLauncher ||
+                        block is IMyStoreBlock)
                     {
                         return true;
                     }
@@ -102,18 +78,38 @@
                 };
             }
 
+            /// <summary>
+            /// Delegate function for Echo.
+            /// </summary>
             private readonly Action<string> Echo;
 
-            public List<IMyGasTank> OxygenInventory { get; } = new List<IMyGasTank>();
-            public List<IMyGasTank> HydrogenInventory { get; } = new List<IMyGasTank>();
-            public List<IMyEntity> CargoInventory { get; } = new List<IMyEntity>();
-            
+            /// <summary>
+            /// Initialized Oxygen tank list.
+            /// </summary>
+            private List<IMyGasTank> OxygenInventory = new List<IMyGasTank>();
 
+            /// <summary>
+            /// Initialized Hydrogen tank list.
+            /// </summary>
+            private List<IMyGasTank> HydrogenInventory = new List<IMyGasTank>();
+
+            /// <summary>
+            /// Initialized cargo list.
+            /// </summary>
+            private List<IMyEntity> CargoInventory = new List<IMyEntity>();
+            
+            /// <summary>
+            /// Initializes the ship inventory class.
+            /// </summary>
+            /// <param name="echo">Echo delegate.</param>
             public ShipInventory(Action<string> echo)
             {
                 this.Echo = echo;
             }
 
+            /// <summary>
+            /// Gets the Oxygen Level.
+            /// </summary>
             public InventoryLevelResult Oxygen
             {
                 get
@@ -122,6 +118,9 @@
                 }
             }
 
+            /// <summary>
+            /// Gets the Hydrogen level.
+            /// </summary>
             public InventoryLevelResult Hydrogen
             {
                 get
@@ -130,6 +129,9 @@
                 }
             }
 
+            /// <summary>
+            /// Gets the cargo level.
+            /// </summary>
             public InventoryLevelResult Cargo
             {
                 get
@@ -138,6 +140,9 @@
                 }
             }
 
+            /// <summary>
+            /// Clears the inventory blocks.
+            /// </summary>
             public void Clear()
             {
                 this.HydrogenInventory.Clear();
@@ -145,6 +150,10 @@
                 this.CargoInventory.Clear();
             }
 
+            /// <summary>
+            /// Adds the list of terminal blocks, sorting into their correct list.
+            /// </summary>
+            /// <param name="blocks">Terminal blocks.</param>
             public void AddRange(List<IMyTerminalBlock> blocks)
             {
                 foreach (IMyTerminalBlock block in blocks)
@@ -168,6 +177,11 @@
                 }
             }
 
+            /// <summary>
+            /// Calculates the inventory level of the given gas tanks.
+            /// </summary>
+            /// <param name="gasTanks">List of gas tanks.</param>
+            /// <returns>Inventory Level Result</returns>
             private InventoryLevelResult GetInventoryLevel(List<IMyGasTank> gasTanks)
             {
                 InventoryLevelResult result = new InventoryLevelResult()
@@ -187,6 +201,11 @@
                 return result;
             }
 
+            /// <summary>
+            /// Calculates the Inventory level of the cargo entities.
+            /// </summary>
+            /// <param name="entities">List of storage entities.</param>
+            /// <returns>Inventory Level Result.</returns>
             private InventoryLevelResult GetInventoryLevel(List<IMyEntity> entities)
             {
                 InventoryLevelResult result = new InventoryLevelResult()
