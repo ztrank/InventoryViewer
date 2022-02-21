@@ -160,8 +160,8 @@
                 {
                     if (block is IMyGasTank)
                     {
-                        this.Echo("Gas Tank/Generator Definition Subtype: " + block.BlockDefinition.SubtypeId);
-                        if (block.BlockDefinition.SubtypeId.Contains("Oxygen"))
+                        
+                        if (block.DefinitionDisplayNameText.Contains("Oxygen"))
                         {
                             this.OxygenInventory.Add((IMyGasTank)block);
                         }

@@ -173,7 +173,7 @@
                     position += new Vector2(10, 0);
 
                     float remainingSpace = barMaxWithd * (value / 100);
-                    this.Echo("Creating Boxes: " + remainingSpace.ToString());
+
                     while(remainingSpace > 20)
                     {
                         this.Sprites.Add(new MySprite()
